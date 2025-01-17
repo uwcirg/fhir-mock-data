@@ -1,0 +1,63 @@
+{
+  "resourceType": "MedicationRequest",
+  "id": "789",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2024-11-22T22:42:18.259+00:00",
+    "source": "#wO8WZ8gbMeVL3xhM"
+  },
+  "identifier": [
+    {
+      "system": "https://github.com/uwcirg/script-fhir-facade/"
+    }
+  ],
+  "medicationCodeableConcept": {
+    "extension": [
+      {
+        "url": "http://cosri.org/fhir/drug_class",
+        "valueString": "opioid"
+      }
+    ],
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/ndc",
+        "code": "72865020401",
+        "display": "HYDROCODONE BITARTRATE 10 MG-ACETAMINOPHEN 325 MG TABLET"
+      },
+      {
+        "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+        "code": "856999",
+        "display": "HYDROCODONE BITARTRATE 10 MG-ACETAMINOPHEN 325 MG TABLET"
+      }
+    ],
+    "text": "HYDROCODONE BITARTRATE 10 MG-ACETAMINOPHEN 325 MG TABLET"
+  },
+  "subject": {
+    "reference": "Patient/772"
+  },
+  "authoredOn": "2024-11-06",
+  "requester": {
+    "display": "Tricia Fonte"
+  },
+  "dispenseRequest": {
+    "extension": [
+      {
+        "url": "http://cosri.org/fhir/pharmacy_name",
+        "valueString": "Pharmacy A, INC."
+      },
+      {
+        "url": "http://cosri.org/fhir/last_fill",
+        "valueDate": "2024-11-06"
+      }
+    ],
+    "quantity": {
+      "value": 150.0
+    },
+    "expectedSupplyDuration": {
+      "value": 30.0,
+      "unit": "days",
+      "system": "http://unitsofmeasure.org",
+      "code": "d"
+    }
+  }
+}
