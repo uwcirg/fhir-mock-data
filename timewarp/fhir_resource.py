@@ -21,6 +21,10 @@ class FHIR_Resource:
     def __init__(self, data: dict = None):
         self.data = data
 
+    @property
+    def resource_type(self):
+        return self.data and self.data.get('resourceType')
+
     @classmethod
     def register_resource(cls, resource_type: str):
         """
