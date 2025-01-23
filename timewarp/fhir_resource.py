@@ -36,13 +36,10 @@ class FHIR_Resource:
         return decorator
 
     @classmethod
-    def parse_file(cls, file_path: str) -> 'FHIR_Resource':
+    def parse_fhir(cls, data: dict) -> 'FHIR_Resource':
         """
-        Factory method to parse a JSON file and return the appropriate subclass instance.
+        Factory method to parse a JSON dict and return the appropriate subclass instance.
         """
-        with open(file_path, 'r') as file:
-            data = json.load(file)
-
         resource_type = data.get('resourceType')
         if not resource_type:
             raise ValueError("The JSON file does not contain a 'resourceType' field.")

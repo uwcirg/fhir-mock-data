@@ -1,3 +1,4 @@
+import json
 import pytest
 
 from timewarp.fhir_resource import FHIR_Resource, Patient, MedicationRequest
@@ -6,7 +7,9 @@ from timewarp.fhir_resource import FHIR_Resource, Patient, MedicationRequest
 @pytest.fixture
 def patient_resource(datadir):
     filepath = str(datadir / "Patient.json")
-    return FHIR_Resource.parse_file(filepath)
+    with open(filepath, "r") as json_file:
+        data = json.load(json_file)
+    return FHIR_Resource.parse_fhir(data)
 
 
 def test_parse_patient(patient_resource):
@@ -24,7 +27,9 @@ def test_timeshit_patient(patient_resource):
 @pytest.fixture
 def medrequest_resource(datadir):
     filepath = str(datadir / "MedicationRequest.json")
-    return FHIR_Resource.parse_file(filepath)
+    with open(filepath, "r") as json_data:
+        data = json.load(json_data)
+    return FHIR_Resource.parse_fhir(data)
 
 
 def test_parse_medrequest(medrequest_resource):

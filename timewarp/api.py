@@ -13,6 +13,7 @@ import requests
 import sys
 
 from fhir_resource import FHIR_Resource
+from input_util import next_json_object
 
 
 def bail(reason=None):
@@ -25,12 +26,17 @@ def bail(reason=None):
 
 def move_24_ahead(source_dir, fhir_base_url):
     """POST the FHIR resources found in files, 24 hours forward in time"""
-    for filename in os.listdir(source_dir):
-        fhir_data = FHIR_Resource.parse_file(os.path.join(source_dir, filename))
+    def timeshift_resource(data):
+        fhir_data = FHIR_Resource.parse_json(data)
         fhir_data.timewarp(hours=24)
 
         # POST the time warped data to the requested FHIR server
         requests.POST(fhir_base_url + fhir_data.resource_type, json=fhir_data)
+
+    for filename in os.listdir(source_dir):
+        # could be single JSON file, or NDJSON
+        for data in next_json_object(filename):
+            timeshift_resource(data)
 
 
 def main():
