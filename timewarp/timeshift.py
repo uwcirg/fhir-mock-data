@@ -44,17 +44,3 @@ def timeshift_json(
     else:
         return data  # Base case: return data unchanged
 
-# Example Usage
-sample_json = {
-    "eventDate": "2025-01-14",
-    "eventTime": "2025-01-14T10:00:00",
-    "metadata": {
-        "creationDate": "2025-01-13",
-        "creationDateTime": "2025-01-13T15:30:00",
-        "user": "John Doe"
-    },
-    "logs": [
-        {"logDate": "2025-01-12", "logDateTime": "2025-01-12T08:15:00", "message": "Log entry 1"},
-        {"logDate": "2025-01-13", "logDateTime": "2025-01-13T09:45:00", "message": "Log entry 2"}
-    ]
-}

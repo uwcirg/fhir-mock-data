@@ -1,0 +1,26 @@
+{
+  "resourceType": "Procedure",
+  "id": "37af67bc-bfee-40f3-b137-cbf51af9a3ea",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2024-10-03T10:01:07.419+00:00",
+    "source": "#ShMOsrIvXKDAH2nh"
+  },
+  "identifier": [ {
+    "system": "http://www.uwmedicine.org/procedure_id",
+    "value": "55200227-1009032"
+  } ],
+  "status": "completed",
+  "code": {
+    "coding": [ {
+      "system": "http://www.ama-assn.org/go/cpt",
+      "code": "1009032",
+      "display": "REFERRAL TO PHYSICAL THERAPY"
+    } ],
+    "text": "REFERRAL TO PHYSICAL THERAPY"
+  },
+  "subject": {
+    "reference": "Patient/040bbef6-8f95-4ec5-b040-38b441c3beef"
+  },
+  "performedDateTime": "2016-07-07"
+}

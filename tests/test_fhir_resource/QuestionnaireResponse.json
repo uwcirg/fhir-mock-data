@@ -1,0 +1,130 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "1a19e441-d1a6-4b52-95b1-e6b9f317772e",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2023-11-17T19:17:56.029+00:00",
+    "source": "#vvphrXNH4QZ5KwcS"
+  },
+  "identifier": {
+    "system": "https://paintracker-stage.cirg.washington.edu/survey_session_id",
+    "value": "5776"
+  },
+  "questionnaire": "Questionnaire/CIRG-PainTracker-Location-Body-Diagram",
+  "status": "completed",
+  "subject": {
+    "reference": "Patient/efa54e84-3b5c-4bd6-a7b3-69bcf408beef"
+  },
+  "authored": "2023-10-03T01:11:51Z",
+  "author": {
+    "reference": "Patient/efa54e84-3b5c-4bd6-a7b3-69bcf4082e2f"
+  },
+  "source": {
+    "reference": "Patient/efa54e84-3b5c-4bd6-a7b3-69bcf4082e2f"
+  },
+  "item": [ {
+    "linkId": "CIRG-PainTracker-1252",
+    "text": "Below is a list of locations of pain. Please indicate one or more areas where you have felt pain over the past week.",
+    "answer": [ {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6662",
+        "display": "front_posterior_head"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6664",
+        "display": "front_left_brow"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6666",
+        "display": "front_left_cheek"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6668",
+        "display": "front_left_jaw"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6720",
+        "display": "back_left_posterior_neck"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6721",
+        "display": "back_midline_posterior_neck"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6723",
+        "display": "back_left_posterior_shoulder"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6724",
+        "display": "back_left_scapular"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6725",
+        "display": "back_midline_upper_back"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6728",
+        "display": "back_left_posterior_lateral_upper_arm"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6729",
+        "display": "back_left_posterior_medial_upper_arm"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "8441",
+        "display": "front_left_anterior_neck"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "8442",
+        "display": "front_left_anterior_chest"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "8445",
+        "display": "back_left_posterior_head"
+      }
+    }, {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "8446",
+        "display": "back_upper_left_posterior_thorax"
+      }
+    } ]
+  }, {
+    "linkId": "CIRG-PainTracker-1253",
+    "text": "Please state precisely where your severe pain is",
+    "answer": [ {
+      "valueCoding": {
+        "system": "https://fhir-auth.uwmedicine.cosri.app/fhir/",
+        "code": "6788",
+        "display": "front_left_anterior_shoulder"
+      }
+    } ]
+  } ]
+}

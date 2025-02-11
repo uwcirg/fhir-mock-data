@@ -2,19 +2,18 @@
 
 In general, every element in a FHIR resource should be warped a consistent
 amount of time forward.  The abstractions herein manage exceptions such
-as metadata
+as metadata and birthdate.
 """
-
-import json
+from copy import deepcopy
 from typing import Type, Dict
 
 from timewarp.timeshift import timeshift_json
 
 
 class FHIR_Resource:
-    """
-    Base class for FHIR resources. Provides a factory method `parse_file`
-    to instantiate the correct subclass based on the `resourceType`.
+    """FHIR Resource base class for time warp needs.
+
+    Specialize subclasses for specific time warp needs.
     """
     resource_type_map: Dict[str, Type['FHIR_Resource']] = {}
 
@@ -38,7 +37,8 @@ class FHIR_Resource:
     @classmethod
     def parse_fhir(cls, data: dict) -> 'FHIR_Resource':
         """
-        Factory method to parse a JSON dict and return the appropriate subclass instance.
+        Factory method to parse a JSON dict and return the base class or appropriate
+        subclass instance when applicable.
         """
         resource_type = data.get('resourceType')
         if not resource_type:
@@ -46,17 +46,14 @@ class FHIR_Resource:
 
         subclass = cls.resource_type_map.get(resource_type)
         if not subclass:
-            raise ValueError(f"Unsupported resourceType: {resource_type}")
+            # w/o subclass, no specialization needed; return base class
+            subclass = FHIR_Resource()
 
         return subclass.from_dict(data)
 
     @classmethod
     def from_dict(cls, data: dict) -> 'FHIR_Resource':
-        """
-        Create an instance of the class from a dictionary.
-        Should be implemented by subclasses.
-        """
-        raise NotImplementedError("Subclasses must implement the `from_dict` method.")
+        return cls(data)
 
     def exclusion_attributes(self) -> 'list':
         """
@@ -65,9 +62,15 @@ class FHIR_Resource:
         """
         return ["lastUpdated"]
 
-    def timeshift(self):
+    def timeshift(self, num_days: int) -> bool:
+        """Timeshift forward requested number of days
+
+        :returns: True if timeshift resulted in any change, False otherwise
+        """
+        data_b4 = deepcopy(self.data)
         self.data = timeshift_json(
-            self.data, num_days=1, exclusion_list=self.exclusion_attributes())
+            self.data, num_days=num_days, exclusion_list=self.exclusion_attributes())
+        return data_b4 != self.data
 
 
 @FHIR_Resource.register_resource("Patient")
@@ -75,22 +78,8 @@ class Patient(FHIR_Resource):
     def __init__(self, data: dict = None):
         super().__init__(data)
 
-    @classmethod
-    def from_dict(cls, data: dict) -> 'Patient':
-        return cls(data)
-
     def exclusion_attributes(self) -> 'list':
         """ Return list of Patient datetime attributes to be excluded from timewarp """
         ex_list = super().exclusion_attributes()
         ex_list.append("birthDate")
         return ex_list
-
-
-@FHIR_Resource.register_resource("MedicationRequest")
-class MedicationRequest(FHIR_Resource):
-    def __init__(self, data: dict = None):
-        super().__init__(data)
-
-    @classmethod
-    def from_dict(cls, data: dict) -> 'MedicationRequest':
-        return cls(data)
