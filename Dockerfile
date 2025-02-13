@@ -5,7 +5,7 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 
 # Set working dir in container
-WORKDIR /app
+WORKDIR /opt/app
 
 # Install build dependencies for projects using pyproject.toml
 RUN apt-get update && apt-get install -y --no-install-recommends \
