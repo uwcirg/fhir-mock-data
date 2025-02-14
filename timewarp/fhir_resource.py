@@ -7,7 +7,7 @@ as metadata and birthdate.
 from copy import deepcopy
 from typing import Type, Dict
 
-from timewarp.timeshift import timeshift_json
+from .timeshift import timeshift_json
 
 
 class FHIR_Resource:

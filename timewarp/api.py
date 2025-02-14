@@ -12,8 +12,8 @@ import os
 import requests
 import sys
 
-from fhir_resource import FHIR_Resource
-from input_util import next_json_object
+from .fhir_resource import FHIR_Resource
+from .input_util import next_json_object
 
 
 def bail(reason=None):
