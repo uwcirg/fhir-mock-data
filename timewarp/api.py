@@ -12,8 +12,8 @@ import os
 import requests
 import sys
 
-from .fhir_resource import FHIR_Resource
-from .input_util import next_json_object
+from fhir_resource import FHIR_Resource
+from input_util import next_json_object
 
 
 def bail(reason=None):
@@ -21,6 +21,7 @@ def bail(reason=None):
     output = usage.format(script=sys.argv[0])
     if reason:
         output = f"{output}\nERROR:\n  {reason}"
+    print(output, file=sys.stderr)
     sys.exit(-1)
 
 
@@ -41,7 +42,7 @@ def move_24_ahead(source_dir, fhir_base_url):
 
 
 def main():
-    if len(sys.argv != 2):
+    if len(sys.argv) != 2:
         bail("wrong arg count")
     input_dir = sys.argv[1]
     if not os.path.isdir(input_dir):
