@@ -40,7 +40,17 @@ def next_json_object(file_path: str) -> dict:
     if determine_file_type(file_path) == "NDJSON":
         with open(file_path, 'r') as ndjson:
             for line in ndjson:
-                yield json.loads(line.strip())
+                try:
+                    obj = json.loads(line.strip())
+                    yield obj
+                except AttributeError as ae:
+                    print(f"Can't parse line '{line}' from {file_path} : {ae}")
+                    raise ae
     else:
         with open(file_path, 'r') as json_file:
-            yield json.load(json_file.read().strip())
+            try:
+                obj = json.loads(json_file.read().strip())
+                yield obj
+            except AttributeError as ae:
+                print(f"Can't parse {file_path} : {ae}")
+                raise ae
