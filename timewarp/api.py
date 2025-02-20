@@ -1,5 +1,5 @@
 usage = """Usage:
-  {script} <input_directory> <FHIR_BASE_URL>
+  {script} <input_directory> <FHIR_BASE_URL> [number of days]
 
 Description:
   for all JSON or NDJSON files found in <input_directory>, adjust the contained
@@ -42,7 +42,7 @@ def move_24_ahead(source_dir, fhir_base_url, num_days):
         # could be single JSON file, or NDJSON
         for data in next_json_object(os.path.join(source_dir, filename)):
             timeshift_resource(data)
-    print(f"timeshift of {num_days} days complete")
+    print(f"timeshift of {num_days} day(s) complete")
 
 
 def main():
