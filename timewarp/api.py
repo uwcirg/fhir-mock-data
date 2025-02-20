@@ -25,24 +25,28 @@ def bail(reason=None):
     sys.exit(-1)
 
 
-def move_24_ahead(source_dir, fhir_base_url):
-    """POST the FHIR resources found in files, 24 hours forward in time"""
+def move_24_ahead(source_dir, fhir_base_url, num_days):
+    """Update the FHIR resources found in files, num_days forward in time"""
     def timeshift_resource(data):
         fhir_data = FHIR_Resource.parse_fhir(data)
-        changed = fhir_data.timeshift(num_days=1)
+        changed = fhir_data.timeshift(num_days=num_days)
 
-        # POST the time warped data to the requested FHIR server
+        # PUT the time warped data to the requested FHIR server
         if changed:
-            requests.POST(fhir_base_url + fhir_data.resource_type, json=fhir_data)
+            url = f"{fhir_base_url}{fhir_data.resource_type}/{fhir_data.data['id']}"
+            print(f"PUT timeshift change to {url}")
+            response = requests.put(url, json=fhir_data.data)
+            response.raise_for_status()
 
     for filename in os.listdir(source_dir):
         # could be single JSON file, or NDJSON
-        for data in next_json_object(filename):
+        for data in next_json_object(os.path.join(source_dir, filename)):
             timeshift_resource(data)
+    print(f"timeshift of {num_days} days complete")
 
 
 def main():
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 3:
         bail("wrong arg count")
     input_dir = sys.argv[1]
     if not os.path.isdir(input_dir):
@@ -54,10 +58,13 @@ def main():
     except requests.exceptions.HTTPError as he:
         bail(he.response.text)
 
+    num_days = 1
+    if len(sys.argv) > 3:
+        num_days = int(sys.argv[3])
     if not fhir_base_url.endswith('/'):
         fhir_base_url += '/'
 
-    return move_24_ahead(input_dir, fhir_base_url)
+    return move_24_ahead(input_dir, fhir_base_url, num_days)
 
 
 if __name__ == "__main__":
