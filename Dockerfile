@@ -12,8 +12,6 @@ WORKDIR /opt/app
 
 # Install build dependencies for projects using pyproject.toml
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy pyproject.toml and requirements.txt first for dependency installation
