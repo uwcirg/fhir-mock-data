@@ -1,6 +1,9 @@
-#!/usr/bin/env python3
-"""Util to download all resources from the given FHIR server"""
-import argparse, requests, sys, json, time
+"""Util to download all resources from the given FHIR server
+
+This minimally altered script was copied from:
+https://github.com/uwcirg/fhir-eval-environments/blob/main/utils/fhir-server-export.py
+"""
+import argparse, requests, json, time
 
 
 def download_file(url, filename=None, auth_token=None):
@@ -104,10 +107,10 @@ def kickoff(base_url, no_cache=False, auth_token=None, type=None, since=None):
     try:
         kickoff_response.raise_for_status()
     except requests.exceptions.HTTPError as e:
-        print("recieved error from Hapi in kickoff request")
+        print("received error from Hapi in kickoff request")
         print("response: ", kickoff_response.content)
         if kickoff_response.status_code == 400:
-            print("recieved 400 in kickoff response; is Bulk Export enabled?")
+            print("received 400 in kickoff response; is Bulk Export enabled?")
         exit(1)
 
     return kickoff_response.headers["Content-Location"]
@@ -124,18 +127,32 @@ def main():
     parser.add_argument("--since", action="store", help="Restrict Export to resources last updated on or after the given time (format eg '2019-10-25T11:14:00Z'); see _since")
 
     args = parser.parse_args()
-
-    status_poll_url = kickoff(
+    run_export(
         base_url=args.base_url,
+        directory=args.directory,
         no_cache=args.no_cache,
+        max_timeout=args.max_timeout,
         auth_token=args.auth_token,
         type=args.type,
         since=args.since,
     )
+
+
+def run_export(
+        base_url, directory='./', no_cache=False, max_timeout=60*10, auth_token=None,
+        type=None, since=None):
+    """run export as requested.  see main() arg lists for parameter documentation"""
+    status_poll_url = kickoff(
+        base_url=base_url,
+        no_cache=no_cache,
+        auth_token=auth_token,
+        type=type,
+        since=since,
+    )
     complete_response = poll_status(
-        fixup_url(url=status_poll_url, base_url=args.base_url),
-        auth_token=args.auth_token,
-        max_rety_time=args.max_timeout,
+        fixup_url(url=status_poll_url, base_url=base_url),
+        auth_token=auth_token,
+        max_rety_time=max_timeout,
     )
     try:
         complete_json = complete_response.json()
@@ -155,16 +172,16 @@ def main():
         exit(1)
 
     for file_item in file_items:
-        url = fixup_url(url=file_item["url"], base_url=args.base_url)
+        url = fixup_url(url=file_item["url"], base_url=base_url)
 
         local_filename = ".".join((
             url.split("/")[-1],
             file_item["type"],
             "ndjson",
         ))
-        local_filename = f"{args.directory}{local_filename}"
+        local_filename = f"{directory}{local_filename}"
         print("downloading: ", url)
-        download_file(url=url, filename=local_filename, auth_token=args.auth_token)
+        download_file(url=url, filename=local_filename, auth_token=auth_token)
         print("saved to: ", local_filename)
 
 
