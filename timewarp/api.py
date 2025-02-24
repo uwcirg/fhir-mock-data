@@ -75,7 +75,7 @@ def main():
         fhir_base_url += '/'
 
     # Export all FHIR resources to temp directory
-    run_export(base_url=fhir_base_url, num_days=num_days, directory=input_dir)
+    run_export(base_url=fhir_base_url, directory=input_dir)
 
     # Timeshift and PUT any changed resources back to FHIR store
     return move_24_ahead(input_dir, fhir_base_url, num_days)
