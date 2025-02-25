@@ -27,7 +27,7 @@ def bail(reason=None):
     if reason:
         output = f"{output}\nERROR:\n  {reason}"
     print(output, file=sys.stderr)
-    sys.exit(-1)
+    sys.exit(1)
 
 
 def move_24_ahead(source_dir, fhir_base_url, num_days):

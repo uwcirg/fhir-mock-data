@@ -3,7 +3,7 @@
 This minimally altered script was copied from:
 https://github.com/uwcirg/fhir-eval-environments/blob/main/utils/fhir-server-export.py
 """
-import argparse, os, requests, json, time
+import argparse, os, requests, sys, json, time
 
 
 def download_file(url, filename=None, auth_token=None):
@@ -76,7 +76,7 @@ def poll_status(status_poll_url, auth_token=None, max_rety_time=600):
         print(f"waiting {retry_after} seconds")
         rety_time += retry_after
         time.sleep(retry_after)
-    print("timeout exceeded")
+    print("timeout exceeded", file=sys.stderr)
     exit(1)
 
 
@@ -110,10 +110,10 @@ def kickoff(base_url, no_cache=False, auth_token=None, type=None, since=None):
     try:
         kickoff_response.raise_for_status()
     except requests.exceptions.HTTPError as e:
-        print(f"received error from Hapi in kickoff request, {e}")
-        print("response: ", kickoff_response.content)
+        print(f"received error from Hapi in kickoff request, {e}", file=sys.stderr)
+        print("response: ", kickoff_response.content, file=sys.stderr)
         if kickoff_response.status_code == 400:
-            print("received 400 in kickoff response; is Bulk Export enabled?")
+            print("received 400 in kickoff response; is Bulk Export enabled?", file=sys.stderr)
         exit(1)
 
     return kickoff_response.headers["Content-Location"]
