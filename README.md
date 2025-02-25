@@ -3,24 +3,27 @@
 ## Timewarp
 
 Used to keep demo data in sync, the timewarp utility will advance all date and
-datetime attributes found in the named directory of FHIR Resource files, a 
-given number of days and then PUT the changed files to the named HAPI store.
+datetime attributes found (excluding a few such as Patient.birthDate) in the
+provided FHIR store, a given number of days, and then PUT the changed files
+back to the same named HAPI store.
 
 Example use:
 
-Copy `fhir-walk.py` into the `timewarp` container and export current resources:
+First, obtain the network address for the FHIR endpoint to be timewarped.  As
+an example, from the same directory as the docker-compose.yaml containing the
+FHIR endpoint of interest (fhir-internal network in this case):
+
 ```
-docker cp ~/fhir-walk/fhir-walk.py `docker ps|grep timewarp|awk '{print $1}'`:.
-docker-compose exec timewarp bash
-/fhir-walk.py /tmp http://fhir-internal:8080/fhir
+$ INTERNAL_FHIR=$(docker inspect $(docker compose ps -q fhir) --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}' | awk '{print $2}')
 ```
-Push all but the excluded date/time fields (such as `metadata` and
-`Patient.birthdate`) forward 1 day, and put the results back to the same
-FHIR store:
+
+Then, run a container built from this repository, naming the network, volume
+and arguments to move all found FHIR resources forward 1 day:
+
 ```
-docker-compose exec timewarp bash
-python timewarp/api.py /tmp http://fhir-internal:8080/fhir
+$ docker run --network $INTERNAL_FHIR -v /tmp/fhir-timewarp:/tmp/fhir-timewarp --pull always ghcr.io/uwcirg/fhir-mock-data:latest http://fhir-internal:8080/fhir 1 /tmp/fhir-timewarp
 ```
+
 
 ## Upload
 
