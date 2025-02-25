@@ -51,7 +51,10 @@ def fixup_url(url, base_url):
 
 
 def poll_status(status_poll_url, auth_token=None, max_rety_time=600):
-    """Poll given status URL until ready (or timeout). Returns response JSON when ready to download"""
+    """Poll given status URL until ready (or timeout).
+
+    Returns response JSON when ready to download
+    """
 
     headers = {}
     if auth_token is not None:
@@ -142,6 +145,7 @@ def run_export(
         base_url, directory='./', no_cache=False, max_timeout=60*10, auth_token=None,
         type=None, since=None):
     """run export as requested.  see main() arg lists for parameter documentation"""
+    print(f"Launch export against {base_url}")
     status_poll_url = kickoff(
         base_url=base_url,
         no_cache=no_cache,
