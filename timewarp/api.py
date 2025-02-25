@@ -5,7 +5,7 @@ Positional Arguments:
   FHIR_BASE_URL  The base URL of the FHIR store to query and store the time shifted FHIR resources
   NUM_DAYS    Optional number of days to move date and time values forward, defaults to 1
   TMP_DIR    Optional temporary directory to use, defaults to /tmp
-  
+
 Description:
   Query the FHIR store at FHIR_BASE_URL for all contained FHIR resources.  Shift
   all but a few excluded date and time values forward NUM_DAYS.  Excluded values

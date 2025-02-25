@@ -3,7 +3,7 @@
 This minimally altered script was copied from:
 https://github.com/uwcirg/fhir-eval-environments/blob/main/utils/fhir-server-export.py
 """
-import argparse, requests, json, time
+import argparse, os, requests, json, time
 
 
 def download_file(url, filename=None, auth_token=None):
@@ -110,7 +110,7 @@ def kickoff(base_url, no_cache=False, auth_token=None, type=None, since=None):
     try:
         kickoff_response.raise_for_status()
     except requests.exceptions.HTTPError as e:
-        print("received error from Hapi in kickoff request")
+        print(f"received error from Hapi in kickoff request, {e}")
         print("response: ", kickoff_response.content)
         if kickoff_response.status_code == 400:
             print("received 400 in kickoff response; is Bulk Export enabled?")
@@ -183,7 +183,7 @@ def run_export(
             file_item["type"],
             "ndjson",
         ))
-        local_filename = f"{directory}{local_filename}"
+        local_filename = os.path.join(directory, local_filename)
         print("downloading: ", url)
         download_file(url=url, filename=local_filename, auth_token=auth_token)
         print("saved to: ", local_filename)
