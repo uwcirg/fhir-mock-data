@@ -26,5 +26,3 @@ COPY . .
 # Define the default command to run the application
 ENTRYPOINT ["python", "timewarp/api.py"]
 CMD ["main"]
-# Debugging endpoint - idle spin
-# CMD ["tail", "-f", "/dev/null"]
