@@ -1,9 +1,10 @@
 #!/bin/bash
 
-FEMR_DIR="/home/pbugni/cosri-environments/dev/freestanding/femr"
+FEMR_DIR="/srv/www/cosri-demo/cosri-environments/dev/freestanding/femr"
 TMP_DIR="/tmp/fhir-timewarp"
 SYSTEM="demo"
 LOG_FILE="/var/log/fhir-timewarp/${SYSTEM}-$(date +%F).log"
+DAYS_FORWARD=1
 
 cd "$FEMR_DIR" || { echo "directory not found $FEMR_DIR" | tee -a "$LOG_FILE"; exit 1; }
 
@@ -30,7 +31,7 @@ fi
 #   the desired FHIR endpoint, number of days, named temp directory
 docker run --network $INTERNAL_FHIR -v /tmp/fhir-timewarp:/tmp/fhir-timewarp \
   --pull always ghcr.io/uwcirg/fhir-mock-data:latest \
-  http://fhir-internal:8080/fhir 1 /tmp/fhir-timewarp > "$LOG_FILE" 2>&1
+  http://fhir-internal:8080/fhir $DAYS_FORWARD /tmp/fhir-timewarp > "$LOG_FILE" 2>&1
 
 if [ $? -eq 0 ]; then
   exit 0
